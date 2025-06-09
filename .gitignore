@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg
+*.egg-info
+dist/
+build/
+*.so
+.venv/
+
+# IDEs e Editores
+.vscode/        # Visual Studio Code
+.idea/          # PyCharm / IntelliJ
+*.sublime-project
+*.sublime-workspace
+.DS_Store       # macOS specific
+
+# Flask specific
+instance/
+.flaskenv
+
+# Arquivos de Uploads e Processados (gerados pela aplicação)
+static/uploads/
+static/processed/
+
+# Arquivos de Log e Temporários
+*.log
+*.tmp
+.webassets-cache/
+
+# Arquivos de Sistema
+Thumbs.db   # Windows specific

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esteganografia de Imagem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Esteganografia de Imagem</h1>
+        <p style="text-align: center;">Oculte ou extraia uma mensagem em suas imagens.</p>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="imagem">Selecione a imagem (.png, .jpg, .jpeg):</label>
+                <input type="file" name="imagem" id="imagem" accept=".png, .jpg, .jpeg" required>
+                </div>
+            <div>
+                <label for="operacao">Escolha a operação:</label>
+                <select name="operacao" id="operacao" required>
+                    <option value="" disabled selected>-- Selecione uma operação --</option>
+                    <option value="Esconder">Esconder Mensagem</option>
+                    <option value="Extrair">Extrair Mensagem</option>
+                </select>
+            </div>
+            <div id="mensagemDiv" style="display:none;">
+                <label for="mensagem">Mensagem secreta:</label>
+                <input type="text" name="mensagem" id="mensagem" maxlength="255">
+            </div>
+            <input type="submit" value="Processar Imagem">
+        </form>
+
+        {% if operation_done %}
+        <div class="results">
+            {% if operation_done == 'esconder' and original_image_url and processed_image_url %}
+                <h2>Resultados da Ocultação:</h2>
+                {% if original_image_url %}
+                    <h3>Imagem Original:</h3>
+                    <img src="{{ url_for('static', filename=original_image_url) }}" style="max-width: 400px;">
+                {% endif %}
+
+                {% if processed_image_url %}
+                    <h3>Imagem Processada:</h3>
+                    <img src="{{ url_for('static', filename=processed_image_url) }}" style="max-width: 400px;">
+                    <br>
+                    <a href="{{ url_for('static', filename=processed_image_url) }}" download>Baixar Imagem Processada</a>
+                {% endif %}
+            {% elif operation_done == 'extrair' and original_image_url and extracted_message is not none %}
+                <h2>Resultado da Extração:</h2>
+                <div class="image-container">
+                    <h3>Imagem Analisada:</h3>
+                    <img src="{{ url_for('static', filename=original_image_url) }}" alt="Imagem Analisada">
+                </div>
+                <h3>Mensagem Extraída:</h3>
+                <div class="message-box {% if 'Erro:' in extracted_message or 'não encontrado' in extracted_message or 'mal posicionado' in extracted_message %}error-text{% endif %}">{{ extracted_message }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
